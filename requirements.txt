@@ -1,0 +1,16 @@
+requests
+pandas
+sqlalchemy
+psycopg2-binary
+
+
+python -m venv venv
+venv\Scripts\activate.bat
+
+pip install requests pandas sqlalchemy psycopg2-binary
+
+pip install tabulate
+
+
+python -c "import pandas as pd; df=pd.read_csv('data/clean/clean.csv'); print('Du:', df['datetime'].min(), 'Au:', df['datetime'].max())"
+verification des donnes importees
