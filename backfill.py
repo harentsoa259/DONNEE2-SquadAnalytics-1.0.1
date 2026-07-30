@@ -13,7 +13,6 @@ VILLES = {
 
 os.makedirs("data/raw", exist_ok=True)
 
-# Définition exacte des dates : il y a 90 jours jusqu'à aujourd'hui
 end_date = datetime.now().strftime("%Y-%m-%d")
 start_date = (datetime.now() - timedelta(days=90)).strftime("%Y-%m-%d")
 

@@ -16,14 +16,11 @@ VILLES = {
 os.makedirs("data/raw", exist_ok=True)
 os.makedirs("data/clean", exist_ok=True)
 
-# ---------------------------------------------------------
-# 1. COLLECTE : Données de la journée + Heure courante en direct
-# ---------------------------------------------------------
 print("1️⃣ Collecte des données AQI à l'instant T...")
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 for ville, coords in VILLES.items():
-    # past_days=1 et forecast_days=1 permettent de capturer l'heure exacte courante
+   
     url = (
         f"https://air-quality-api.open-meteo.com/v1/air-quality?"
         f"latitude={coords['lat']}&longitude={coords['lon']}&"
@@ -37,9 +34,6 @@ for ville, coords in VILLES.items():
         with open(file_path, "w", encoding="utf-8") as f:
             json.dump(res.json(), f, indent=4)
 
-# ---------------------------------------------------------
-# 2. TRANSFORMATION : Reconstitution du CSV propre
-# ---------------------------------------------------------
 print("2️⃣ Mise à jour de clean.csv...")
 
 all_rows = []
@@ -62,7 +56,6 @@ for file in raw_files:
         times = hourly.get("time", [])
         
         for i in range(len(times)):
-            # Ne garder que les données passées et l'heure courante (pas le futur)
             dt_str = times[i]
             dt_obj = datetime.fromisoformat(dt_str)
             if dt_obj <= datetime.now():
@@ -80,7 +73,6 @@ for file in raw_files:
 
 df = pd.DataFrame(all_rows)
 
-# Nettoyage, déduplication et filtre des valeurs nulles d'AQI
 df.dropna(subset=["aqi"], inplace=True)
 df.drop_duplicates(subset=["ville", "datetime"], keep="last", inplace=True)
 df.sort_values(by=["datetime", "ville"], inplace=True)
