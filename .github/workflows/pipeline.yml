@@ -27,6 +27,9 @@ jobs:
       - name: Alimenter le Data Warehouse
         run: python load_warehouse.py
 
+      - name: Exporter warehouse.json pour Grafana
+        run: python export_json.py
+
       - name: Enregistrer les modifications dans Git
         run: |
           git config --global user.name "github-actions[bot]"
